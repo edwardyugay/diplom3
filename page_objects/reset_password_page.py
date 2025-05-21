@@ -1,15 +1,17 @@
+import allure
 from page_objects.base_page import BasePage
-from locators.auth_locators import AuthLocators
+from locators.reset_password_locators import ResetPasswordLocators
 
 class ResetPasswordPage(BasePage):
+
+    @allure.step("Ввод email для восстановления пароля")
     def enter_email(self, email):
-        self.input_text(AuthLocators.RESTORE_EMAIL_INPUT, email)
+        self.input_text(ResetPasswordLocators.EMAIL_INPUT, email)
 
-    def click_restore_button(self):
-        self.click(AuthLocators.RESTORE_BUTTON)
+    @allure.step("Нажатие кнопки 'Восстановить'")
+    def submit_reset(self):
+        self.click(ResetPasswordLocators.RESET_BUTTON)
 
-    def click_show_password(self):
-        self.click(AuthLocators.SHOW_PASSWORD_BUTTON)
-
-    def is_password_input_active(self):
-        return self.is_element_present(AuthLocators.SHOW_PASSWORD_BUTTON)
+    @allure.step("Клик по кнопке 'Показать/Скрыть пароль'")
+    def toggle_password_visibility(self):
+        self.click(ResetPasswordLocators.SHOW_PASSWORD)

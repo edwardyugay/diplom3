@@ -1,13 +1,15 @@
-from page_objects.login_page import LoginPage
+import allure
 from page_objects.reset_password_page import ResetPasswordPage
+from utils.urls import BASE_URL
+from locators.reset_password_locators import ResetPasswordLocators
 
-def test_password_reset_flow(browser):
-    login_page = LoginPage(browser)
-    login_page.click_reset_password()
+@allure.suite("Восстановление пароля")
+class TestResetPassword:
 
-    reset_page = ResetPasswordPage(browser)
-    reset_page.enter_email("test@example.com")
-    reset_page.click_restore_button()
-    assert reset_page.is_password_input_active()
-    reset_page.click_show_password()
-    assert reset_page.is_password_input_active()
+    @allure.title("Ввод email и нажатие кнопки восстановления")
+    def test_reset_password_email_flow(self, browser):
+        page = ResetPasswordPage(browser)
+        page.open(f"{BASE_URL}/forgot-password")
+        page.enter_email("test@example.com")
+        page.submit_reset()
+        assert page.is_displayed(ResetPasswordLocators.RESET_SUCCESS_MSG)
